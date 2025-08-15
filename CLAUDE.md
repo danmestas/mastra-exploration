@@ -1,0 +1,1 @@
+- Always use bun as the node package manager for this project
