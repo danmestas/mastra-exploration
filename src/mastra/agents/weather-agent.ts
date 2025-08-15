@@ -1,8 +1,13 @@
-import { openai } from '@ai-sdk/openai';
+import { createOpenRouter } from '@openrouter/ai-sdk-provider';
 import { Agent } from '@mastra/core/agent';
 import { Memory } from '@mastra/memory';
 import { LibSQLStore } from '@mastra/libsql';
 import { weatherTool } from '../tools/weather-tool';
+
+// Initialize OpenRouter with your API key
+const openrouter = createOpenRouter({
+  apiKey: process.env.OPENROUTER_API_KEY,
+});
 
 export const weatherAgent = new Agent({
   name: 'Weather Agent',
@@ -20,7 +25,8 @@ export const weatherAgent = new Agent({
 
       Use the weatherTool to fetch current weather data.
 `,
-  model: openai('gpt-4o-mini'),
+  // Using OpenRouter with the alpha version of Mastra that supports AI SDK v5
+  model: openrouter('openai/gpt-4o-mini'),
   tools: { weatherTool },
   memory: new Memory({
     storage: new LibSQLStore({
